@@ -18,14 +18,19 @@ This script fetches daily exchange rates from the National Bank of Poland (NBP) 
    ```
    
    ```sh
-   pip install requests mysql-connector-python
+   pip install mysql-connector-python
+   ```
+   
+   ```sh
+   pip install flask
    ```
 
 ## Functionality
 - Fetches exchange rates for USD, CHF, GBP, EUR, JPY, and CNY.
 - Stores the exchange rate data in a MySQL database.
 - Formats a message containing the currency name, date, and average exchange rate.
-- Sends an email with the exchange rate information.
+- Sends an email with the exchange rate information,
+- Website via Flask framework.
 
 ## Data Source
 NBP API: [https://api.nbp.pl/](https://api.nbp.pl/)
