@@ -1,19 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NBP API</title>
-</head>
-<body>
-    <nav>
-        <a href="/about/">About</a>
-        <a href="/currencies/">Currencies</a>
-        <a href="/gold/">Gold</a>
-    </nav>
-    <h1>NBP</h1>
-    <h2>Displays information about a given currency - usd, chf, gbp, eur, jpy, cny</h2>
-    <p>URL format for currencies: http://127.0.0.1:5000/api/exchangerates/rates/a/currency_name/</p>
-    <p>URL format for gold prices: http://127.0.0.1:5000/api/cenyzlota/</p>
-    <img src="{{ url_for('static', filename='nbp_logo.jpg') }}" style="width:500px">
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+<h1>Currencies Table</h1>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Currencies</h1>
+
+    <table>
+        <tr>
+            <th>Currency</th>
+            <th>Date</th>
+            <th>Rate</th>
+            <th>Actions</th>
+        </tr>
+        {% for currency in currencies %}
+        <tr>
+            <td>{{ currency.name }}</td>
+            <td>{{ currency.date }}</td>
+            <td>{{ currency.rate }}</td>
+            <td>
+                <a href="">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form action="/" method="POST">
+        <input type="text" name="content" id="content">
+        <button type="submit">Add Currency</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+body {
+    margin:0 auto;
+    background-color: #ffffff;
+    max-width: 130rem;
+}
+
+/* Table */
+table {
+    width: 25%;
+    border-collapse: collapse;
+    padding: 50px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}

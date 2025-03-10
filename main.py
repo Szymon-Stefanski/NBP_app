@@ -1,11 +1,43 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import requests
 
 app = Flask(__name__, static_folder='static')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nbp.db'
+db = SQLAlchemy(app)
 
-@app.route("/")
+class Currencies(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    date = db.Column(db.String(50))
+    rate = db.Column(db.Float)
+
+    def __repr__(self):
+        return '<Currencies %r>' % self.name
+
+@app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template("main.html")
+    if request.method == 'POST':
+        currency_content = request.form['content']
+        url = f"https://api.nbp.pl/api/exchangerates/rates/a/{currency_content}/"
+        getter = requests.get(url)
+        content = getter.json()
+
+        new_currency = Currencies(name=currency_content.upper(),
+                                  date=content["rates"][0]["effectiveDate"],
+                                  rate=content["rates"][0]["mid"])
+
+        try:
+            db.session.add(new_currency)
+            db.session.commit()
+            return redirect("/")
+        except Exception as e:
+            db.session.rollback()
+            return f"Error: {e}"
+    else:
+        currencies = Currencies.query.order_by(Currencies.date).all()
+        return render_template("main.html", currencies=currencies)
 
 @app.route("/about")
 def about():
