@@ -6,8 +6,10 @@
 
 {% block body %}
 <div class="content">
-    <h1>Currencies</h1>
-
+    <h1 style="text-align: center">Currencies</h1>
+    {% if currencies|length < 1 %}
+    <h4>There is nothing in table. Please add a currency by using submit button below!</h4>
+    {% else %}
     <table>
         <tr>
             <th>Currency</th>
@@ -21,12 +23,14 @@
             <td>{{ currency.date }}</td>
             <td>{{ currency.rate }}</td>
             <td>
-                <a href="">Delete</a>
+                <a href="/delete/{{ currency.id }}">Delete</a>
+                <br>
+                <a href="/update/{{ currency.id }}">Update</a>
             </td>
         </tr>
         {% endfor %}
     </table>
-
+    {% endif %}
     <form action="/" method="POST">
         <input type="text" name="content" id="content">
         <button type="submit">Add Currency</button>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import requests
@@ -15,6 +15,7 @@ class Currencies(db.Model):
 
     def __repr__(self):
         return '<Currencies %r>' % self.name
+
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
@@ -39,9 +40,41 @@ def home():
         currencies = Currencies.query.order_by(Currencies.date).all()
         return render_template("main.html", currencies=currencies)
 
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    currency_to_delete = Currencies.query.get_or_404(id)
+
+    try:
+        db.session.delete(currency_to_delete)
+        db.session.commit()
+        return redirect("/")
+    except Exception as e:
+        db.session.rollback()
+        return f"Error: {e}"
+
+
+@app.route("/update/<int:id>", methods=['GET', 'POST'])
+def update(id):
+    currency_to_update = Currencies.query.get_or_404(id)
+
+    if request.method == 'POST':
+        currency_to_update.name = request.form['name']
+        currency_to_update.rate = request.form['rate']
+        currency_to_update.date = request.form['date']
+
+        try:
+            db.session.commit()
+            return redirect("/")
+        except:
+            return "There was an issue updating the currency."
+
+    return render_template("update.html", currency=currency_to_update)
+
 @app.route("/about")
 def about():
     return render_template("about.html")
+
 
 # CURRENCIES - EXCHANGE RATES:
 @app.route("/api/exchangerates/rates/a/<currency>/")
@@ -54,6 +87,7 @@ def value(currency):
 
     return response.json()
 
+
 @app.route("/api/exchangerates/rates/a/<currency>/<date>")
 def value_date(currency, date):
     url = f"https://api.nbp.pl/api/exchangerates/rates/a/{currency}/{date}"
@@ -64,6 +98,7 @@ def value_date(currency, date):
 
     return response.json()
 
+
 @app.route("/api/exchangerates/rates/a/<currency>/<startDate>/<endDate>")
 def value_from_to(currency, startDate, endDate):
     url = f"https://api.nbp.pl/api/exchangerates/rates/a/{currency}/{startDate}/{endDate}"
@@ -73,6 +108,7 @@ def value_from_to(currency, startDate, endDate):
         return {"error": "Invalid request"}, response.status_code
 
     return response.json()
+
 
 @app.route("/api/exchangerates/rates/a/<currency>/last/{topCount}")
 def value_top(currency, topCount):
@@ -96,6 +132,7 @@ def gold():
 
     return response.json()
 
+
 @app.route("/api/cenyzlota/last/<topCount>")
 def gold_top(topCount):
     url = f"https://api.nbp.pl/api/cenyzlota/last/{topCount}"
@@ -106,6 +143,7 @@ def gold_top(topCount):
 
     return response.json()
 
+
 @app.route("/api/cenyzlota/<date>")
 def gold_date(date):
     url = f"https://api.nbp.pl/api/cenyzlota/{date}"
@@ -115,6 +153,7 @@ def gold_date(date):
         return {"error": "Invalid request"}, response.status_code
 
     return response.json()
+
 
 @app.route("/api/cenyzlota/<startDate>/<endDate>")
 def gold_from_to(startDate, endDate):

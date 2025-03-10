@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Update Currency</h1>
+    <form action="/update/{{ currency.id }}" method="POST">
+        <label for="name">Currency Name:</label>
+        <input type="text" name="name" id="name" value="{{ currency.name }}" required>
+
+        <label for="rate">Exchange Rate:</label>
+        <input type="text" name="rate" id="rate" value="{{ currency.rate }}" required>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" value="{{ currency.date }}" required>
+
+        <button type="submit">Update Currency</button>
+    </form>
+</div>
+{% endblock %}
+
