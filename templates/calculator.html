@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currencies Table</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+    <script src="{{ url_for('static', filename='js/back_script.js') }}"></script>
+</head>
+<button id="backButton" data-href-template="{{ url_for('about') }}">Back</button>
+    <script>
+        back();
+    </script>
+<body class="currencies-table">
+    <h1 style="text-align: center">Calculator</h1>
+    <p>Please, choose currency:</p>
+    <form method="POST">
+        <select name="code">
+            {% for currency in currencies %}
+                <option value="{{ currency.code }}">{{ currency.code }} - {{ currency.name }}</option>
+            {% endfor %}
+        </select>
+
+        <p>How much?:</p>
+        <input type="number" name="amount" min="0" step="0.01" required>
+
+        <input type="submit" value="Calculate">
+
+        <p>Calculate to PLN:</p>
+        <output class="output" id="result">{{ result if result else '0' }}</output>
+    </form>
+</body>
+</html>

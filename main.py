@@ -19,11 +19,18 @@ class Currencies(db.Model):
         return '<Currencies %r>' % self.name
 
 
-@app.route('/')
-def home():
+class Gold(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String(50), nullable=False)
+    rate = db.Column(db.Float, nullable=False)
+
+
+@app.route("/")
+def about():
     return render_template("main.html")
 
-@app.route("/currencies/", methods=['GET', 'POST'])
+
+@app.route("/currencies/", methods=['GET'])
 def display_currencies():
     url = "https://api.nbp.pl/api/exchangerates/tables/a/"
     get = requests.get(url)
@@ -56,6 +63,33 @@ def display_currencies():
     return render_template("currencies.html", currencies=currencies)
 
 
+@app.route("/gold/", methods=['GET'])
+def display_gold():
+    url = "https://api.nbp.pl/api/cenyzlota/"
+    get = requests.get(url)
+    content = get.json()
+
+    data = content[0]['data']
+    cena = content[0]['cena']
+
+    existing_gold = Gold.query.filter_by(date=data).first()
+
+    if existing_gold is None:
+        new_gold = Gold(date=data, rate=cena)
+        try:
+            db.session.add(new_gold)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            gold = Gold.query.order_by(Gold.date).all()
+            return render_template("gold.html", gold=gold)
+    else:
+        pass
+
+    gold = Gold.query.order_by(Gold.date).all()
+    return render_template("gold.html", gold=gold)
+
+
 @app.route("/charts/")
 def charts():
     data = {
@@ -70,9 +104,23 @@ def charts():
     return render_template("charts.html", graph_html=graph_html)
 
 
-@app.route("/")
-def about():
-    return render_template("about.html")
+@app.route("/calculator/", methods=['GET', 'POST'])
+def calculator():
+    currencies = Currencies.query.all()
+
+    result = None
+
+    if request.method == 'POST':
+        code = request.form["code"]
+        amount = float(request.form['amount'])
+
+        for currency in currencies:
+            if currency.code == code:
+                rate = currency.rate
+                result = round((amount * rate),2)
+                break
+
+    return render_template("calculator.html", currencies=currencies, result=result)
 
 
 # CURRENCIES - EXCHANGE RATES:

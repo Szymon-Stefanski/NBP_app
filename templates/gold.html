@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Currencies Table</title>
+    <title>Gold Table</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/currencies.css') }}">
     <script src="{{ url_for('static', filename='js/back_script.js') }}"></script>
 </head>
@@ -11,23 +11,19 @@
         back();
     </script>
 <body class="currencies-table">
-    <h1 style="text-align: center">Currencies</h1>
-    {% if currencies|length < 1 %}
+    <h1 style="text-align: center">Gold</h1>
+    {% if gold|length < 1 %}
     <h4>There is nothing in table.</h4>
     {% else %}
     <table>
         <tr>
-            <th>Currency</th>
-            <th>Code</th>
             <th>Date</th>
             <th>Rate (to PLN)</th>
         </tr>
-        {% for currency in currencies %}
+        {% for gold in gold %}
         <tr>
-            <td>{{ currency.name }}</td>
-            <td>{{ currency.code }}</td>
-            <td>{{ currency.date }}</td>
-            <td>{{ currency.rate }}</td>
+            <td>{{ gold.date }}</td>
+            <td>{{ gold.rate }}</td>
         </tr>
         {% endfor %}
     </table>
