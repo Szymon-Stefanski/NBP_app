@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+import plotly.express as px
+import pandas as pd
 import requests
 
 app = Flask(__name__, static_folder='static')
@@ -10,68 +11,66 @@ db = SQLAlchemy(app)
 class Currencies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    date = db.Column(db.String(50))
-    rate = db.Column(db.Float)
+    code = db.Column(db.String(50), unique=True, nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    rate = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return '<Currencies %r>' % self.name
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/')
 def home():
-    if request.method == 'POST':
-        currency_content = request.form['content']
-        url = f"https://api.nbp.pl/api/exchangerates/rates/a/{currency_content}/"
-        getter = requests.get(url)
-        content = getter.json()
+    return render_template("main.html")
 
-        new_currency = Currencies(name=currency_content.upper(),
-                                  date=content["rates"][0]["effectiveDate"],
-                                  rate=content["rates"][0]["mid"])
+@app.route("/currencies/", methods=['GET', 'POST'])
+def display_currencies():
+    url = "https://api.nbp.pl/api/exchangerates/tables/a/"
+    get = requests.get(url)
+    content = get.json()
 
+    currencies_nbp = []
+
+    for rate in content[0]["rates"]:
+        currencies_nbp.append({
+            "name": rate["currency"],
+            "code": rate["code"],
+            "date": content[0]["effectiveDate"],
+            "rate": rate["mid"]
+        })
+
+    for x in currencies_nbp:
+        new_currency = Currencies(name=x["name"],
+                                  code=x["code"],
+                                  date=x["date"],
+                                  rate=x["rate"])
         try:
             db.session.add(new_currency)
             db.session.commit()
-            return redirect("/")
         except Exception as e:
             db.session.rollback()
-            return f"Error: {e}"
-    else:
-        currencies = Currencies.query.order_by(Currencies.date).all()
-        return render_template("main.html", currencies=currencies)
+            currencies = Currencies.query.order_by(Currencies.date).all()
+            return render_template("currencies.html", currencies=currencies)
+
+    currencies = Currencies.query.order_by(Currencies.date).all()
+    return render_template("currencies.html", currencies=currencies)
 
 
-@app.route("/delete/<int:id>")
-def delete(id):
-    currency_to_delete = Currencies.query.get_or_404(id)
+@app.route("/charts/")
+def charts():
+    data = {
+        "date": ["2025-02-01", "2025-02-17", "2025-03-03"],
+        "value": [4.20, 4.25, 4.18]
+    }
+    df = pd.DataFrame(data)
 
-    try:
-        db.session.delete(currency_to_delete)
-        db.session.commit()
-        return redirect("/")
-    except Exception as e:
-        db.session.rollback()
-        return f"Error: {e}"
+    fig = px.line(df, x="date", y="value", title="Kurs EUR/PLN")
+    graph_html = fig.to_html(full_html=False)
+
+    return render_template("charts.html", graph_html=graph_html)
 
 
-@app.route("/update/<int:id>", methods=['GET', 'POST'])
-def update(id):
-    currency_to_update = Currencies.query.get_or_404(id)
-
-    if request.method == 'POST':
-        currency_to_update.name = request.form['name']
-        currency_to_update.rate = request.form['rate']
-        currency_to_update.date = request.form['date']
-
-        try:
-            db.session.commit()
-            return redirect("/")
-        except:
-            return "There was an issue updating the currency."
-
-    return render_template("update.html", currency=currency_to_update)
-
-@app.route("/about")
+@app.route("/")
 def about():
     return render_template("about.html")
 
