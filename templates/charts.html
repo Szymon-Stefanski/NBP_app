@@ -2,10 +2,29 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Wykres kursów</title>
+    <title>Course chart</title>
+    <script src="{{ url_for('static', filename='js/back_script.js') }}"></script>
 </head>
 <body>
-    <h1>Wykres kursów walut</h1>
-    {{ graph_html|safe }}
+    <button id="backButton" data-href-template="{{ url_for('about') }}">Back</button>
+    <script>
+        back();
+    </script>
+    <br>
+    <form method="POST">
+        <select name="code">
+            {% for currency in currencies %}
+                <option value="{{ currency.code }}">{{ currency.code }} - {{ currency.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <h1>Course chart from last 30 days</h1>
+    {% if graph_html %}
+        {{ graph_html|safe }}
+    {% else %}
+        <p>Please choose currency from list to generate chart.</p>
+    {% endif %}
 </body>
+</html>
 </html>
