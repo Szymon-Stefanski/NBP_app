@@ -1,36 +1,38 @@
-# Daily Exchange Rates
+# NBP Exchange Rates App
 
 ## Description
-This script fetches daily exchange rates from the National Bank of Poland (NBP) API for selected currencies, stores them in a MySQL database, and sends them via email.
+This Flask-based application fetches real-time exchange rates and gold prices from the National Bank of Poland (NBP) API. 
+It allows users to view currency exchange rates (USD, EUR, GBP, JPY, CHF, CNY) and the latest gold prices. The app 
+features a user-friendly interface to display charts for selected currencies over the past 30 days, and supports 
+conversion calculations between different currencies and Polish Zloty (PLN).
+
+## Features
+- Fetches exchange rates for major currencies (USD, EUR, GBP, JPY, CHF, CNY etc.) from the NBP API.
+- Displays historical currency exchange rate charts for the last 30 days.
+- Provides the latest gold prices from the NBP API.
+- Allows users to convert currencies to PLN with a simple input form.
+- Generates interactive charts using Plotly to visualize currency rates.
 
 ## Requirements
 - Python 3
-- `requests` (library for fetching data from the API)
-- `mysql-connector-python` (library for connecting to MySQL)
-- `email_sender` module for sending emails
--  A running MySQL server
+- `Flask` (web framework)
+- `Flask-SQLAlchemy` (for database integration)
+- `Plotly` (for generating interactive charts)
+- `requests` (for fetching data from the NBP API)
+- `pandas` (for handling and processing data)
 
 ## Installation
-1. Clone the repository or download the script file.
-2. Install the required libraries:
-   ```sh
-   pip install requests
-   ```
-   
-   ```sh
-   pip install mysql-connector-python
-   ```
-   
+
+1. Clone the repository or download the script files.
+
+2. Install the required Python libraries:
    ```sh
    pip install flask
-   ```
+   pip install flask_sqlalchemy
+   pip install plotly
+   pip install pandas
+   pip install requests
 
-## Functionality
-- Fetches exchange rates for USD, CHF, GBP, EUR, JPY, and CNY.
-- Stores the exchange rate data in a MySQL database.
-- Formats a message containing the currency name, date, and average exchange rate.
-- Sends an email with the exchange rate information,
-- Website via Flask framework.
 
 ## Data Source
 NBP API: [https://api.nbp.pl/](https://api.nbp.pl/)

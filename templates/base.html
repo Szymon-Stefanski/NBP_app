@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>NBP App</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    {% block head %}{% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
@@ -15,11 +14,30 @@
         <a href="/calculator/">Calculator</a>
         <a href="/charts/">Charts</a>
     </nav>
-    <h1>NBP</h1>
-    <h2>Displays information about a given currency - usd, chf, gbp, eur, jpy, cny</h2>
-    <p>URL format for currencies: http://127.0.0.1:5000/api/exchangerates/rates/a/currency_name/</p>
-    <p>URL format for gold prices: http://127.0.0.1:5000/api/cenyzlota/</p>
-    {% block body %}{% endblock %}
+    <h1>NBP App</h1>
+    <h2>Displays information about various currencies and gold prices</h2>
+
+    <h3>Currency Exchange Rates</h3>
+    <p>This app provides the exchange rates for major currencies.</p>
+    <p>To access exchange rate information for a specific currency, the app fetches real-time data from the National Bank of Poland (NBP).</p>
+
+    <h3>Gold Prices</h3>
+    <p>The app also provides the latest gold prices, directly sourced from the NBP API.</p>
+
+    <h3>Features:</h3>
+    <p>Get real-time exchange rates for popular currencies (USD, EUR, GBP, JPY, etc.).</p>
+    <p>Access gold prices based on the latest data from the National Bank of Poland.</p>
+    <p>Easy-to-use interface to fetch currency rates and gold prices with just a few clicks.</p>
+
+    <h3>Usage Instructions</h3>
+    <p>Simply select a currency from the list, enter the desired amount, and the app will calculate the exchange rate in PLN (Polish Zloty).</p>
+    <p>To view the gold prices, simply navigate to the gold price section where the latest prices will be shown.</p>
+
+    <h3>How It Works</h3>
+    <p>Select the desired currency from a dropdown list.</p>
+    <p>Enter the amount you want to convert to PLN.</p>
+    <p>The app calculates the conversion and shows you the result.</p>
+    <p>The data for exchange rates and gold prices is fetched from the NBP API.</p>
     <br>
     <img src="{{ url_for('static', filename='nbp_logo.jpg') }}" style="width:500px">
 </div>

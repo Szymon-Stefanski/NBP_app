@@ -29,7 +29,7 @@ class Gold(db.Model):
 
 @app.route("/")
 def about():
-    return render_template("main.html")
+    return render_template("base.html")
 
 
 @app.route("/currencies/", methods=['GET'])
