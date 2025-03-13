@@ -8,9 +8,9 @@ body, html {
     width: 100%;
 }
 
-.currencies-table {
-    max-width: 1200px;
-    margin: 20px auto;
+.charts-container {
+    max-width: 800px;
+    margin: 50px auto;
     padding: 20px;
     background-color: #f0f5ff;
     border-radius: 10px;
@@ -20,46 +20,57 @@ body, html {
 
 h1 {
     color: #003366;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 20px;
 }
 
-h4 {
-    color: #ff0000;
+p {
     font-size: 1.2rem;
-    margin-top: 20px;
+    color: #333;
+    margin-top: 10px;
 }
 
-/* Table Styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-td, th {
+select {
+    width: 50%;
+    padding: 10px;
+    font-size: 1rem;
     border: 1px solid #c1d3e5;
-    padding: 12px;
-    text-align: center;
+    border-radius: 5px;
 }
 
-th {
+button {
     background-color: #003366;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
     text-transform: uppercase;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-tr:nth-child(even) {
-    background-color: #e6efff;
-}
-
-tr:hover {
-    background-color: #b3d1ff;
+button:hover {
+    background-color: #005bb5;
     transition: 0.3s;
+}
+
+/* Chart Styling */
+.chart-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Back Button */
@@ -83,12 +94,11 @@ tr:hover {
 }
 
 @media screen and (max-width: 768px) {
-    .currencies-table {
-        padding: 10px;
+    .charts-container {
+        padding: 15px;
     }
 
-    table, th, td {
-        font-size: 0.9rem;
-        padding: 8px;
+    select, button {
+        width: 80%;
     }
 }
