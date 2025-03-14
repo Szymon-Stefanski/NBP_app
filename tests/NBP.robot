@@ -9,7 +9,7 @@ Library              SeleniumLibrary
 
 *** Test Cases ***
 Should be able to check currencies value
-    [Documentation]        This is some basic info about the test
+    [Documentation]        This test checks if the gold page correctly displays currencies rate table.
     [Tags]                 1001    Smoke    Currencies
 
     # Initialize Selenium
@@ -33,7 +33,7 @@ Should be able to check currencies value
 
 
 Should be able to check gold value
-    [Documentation]        This is some basic info about the test
+    [Documentation]        This test checks if the gold page correctly displays gold rate table.
     [Tags]                 1002    Smoke    Gold
 
     # Initialize Selenium
@@ -55,7 +55,8 @@ Should be able to check gold value
 
 
 Should be able to check calculator function
-    [Documentation]        This is some basic info about the test
+    [Documentation]        This test verifies that the currency calculator correctly converts 1 USD to PLN.
+
     [Tags]                 1003    Functional    Calculator
 
     # Initialize Selenium
@@ -83,7 +84,7 @@ Should be able to check calculator function
 
 
 Should be able to check charts function
-    [Documentation]        This is some basic info about the test
+    [Documentation]        This test checks if the charts page correctly displays exchange rate history.
     [Tags]                 1004    Functional    Charts
 
     # Initialize Selenium
