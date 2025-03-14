@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Currencies Table</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
     <script src="{{ url_for('static', filename='js/back_script.js') }}"></script>
 </head>
@@ -14,7 +14,7 @@
     <h1 style="text-align: center">Calculator</h1>
     <p style="text-align: center">Please, choose currency:</p>
     <form method="POST">
-        <select name="code">
+        <select name="code" id="code">
             {% for currency in currencies %}
                 <option value="{{ currency.code }}">{{ currency.code }} - {{ currency.name }}</option>
             {% endfor %}
