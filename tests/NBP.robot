@@ -3,7 +3,7 @@ Documentation        Automated tests created to test the NBP app
 Library              SeleniumLibrary
 
 # Run the script
-# robot -d results tests/crm.robot
+# robot -d results tests/NBP.robot
 Suite Setup       Open My Browser
 Suite Teardown    Close Browser
 
@@ -37,7 +37,7 @@ Should be able to check gold value
     [Tags]                 1002    Smoke    Gold
     
     Click Link             id=Gold
-    Page Should Contain    Gold
+    Page Should Contain    SILVER
     Click Button           id=backButton
 
 
