@@ -37,7 +37,7 @@ Should be able to check gold value
     [Tags]                 1002    Smoke    Gold
     
     Click Link             id=Gold
-    Page Should Contain    SILVER
+    Page Should Contain    Gold
     Click Button           id=backButton
 
 
