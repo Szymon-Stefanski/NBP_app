@@ -12,7 +12,23 @@ conversion calculations between different currencies and Polish Zloty (PLN).
 - Provides the latest gold prices from the NBP API.
 - Allows users to convert currencies to PLN with a simple input form.
 - Generates interactive charts using Plotly to visualize currency rates.
+- Containerization for easier installation.
 
+# Easy installation via Docker:
+If you don't have Docker install it:
+https://docs.docker.com/get-docker/
+
+1. Build the Docker image
+docker build -t nbp-app .
+
+2. Run the Docker container
+docker run -p 5000:5000 nbp-app
+
+3. Access the App
+Open your browser and go to:
+http://localhost:5000
+
+# Locally installation:
 ## Requirements
 - Python 3
 - `Flask` (web framework)
